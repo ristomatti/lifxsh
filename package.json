@@ -1,0 +1,27 @@
+{
+  "name": "lifxsh",
+  "version": "0.0.1",
+  "description": "Node.js based command line interface for controlling LIFX lamps. Uses the LIFX LAN protocol for communication.",
+  "main": "lifxsh.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ristomatti/lifxsh.git"
+  },
+  "keywords": [
+    "lifx",
+    "lamp",
+    "cli",
+    "local",
+    "lan",
+    "protocol"
+  ],
+  "author": "Ristomatti Airo <ristomatti@kallio.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ristomatti/lifxsh/issues"
+  },
+  "homepage": "https://github.com/ristomatti/lifxsh#readme"
+}
