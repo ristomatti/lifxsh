@@ -19,8 +19,8 @@
   "keywords": [
     "lifx",
     "lamp",
+    "light",
     "cli",
-    "local",
     "lan",
     "protocol"
   ],
@@ -31,9 +31,11 @@
   },
   "homepage": "https://github.com/ristomatti/lifxsh#readme",
   "dependencies": {
-    "app-module-path": "^1.0.4",
+    "chalk": "^1.1.1",
+    "cliff": "^0.1.10",
     "lodash": "^3.10.1",
     "node-lifx": "^0.3.0",
-    "vorpal": "^1.3.34"
+    "vorpal": "^1.3.34",
+    "winston": "^2.1.1"
   }
 }
