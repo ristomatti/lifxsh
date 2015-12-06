@@ -1,6 +1,6 @@
 {
   "name": "lifxsh",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Node.js based interactive command line interface for controlling LIFX lamps. Uses the LIFX LAN protocol for communication.",
   "main": "cli.js",
   "bin": "./cli.js",
