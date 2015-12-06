@@ -6,25 +6,46 @@ const vorpal = require('vorpal')();
 const lifxsh = require('./lib/lifxsh');
 
 vorpal
-  .command('list', 'Lists connected lights.')
+  .command('list', 'List connected lights.')
   .action((args, cb) => {
     lifxsh.list();
     cb();
   });
 
 vorpal
-  .command('on <name>')
-  .description('Turns light on.')
+  .command('on <name>', 'Turn light on.')
+  .option('-d, --duration [ms]', 'Duration (ms)')
   .action((args, cb) => {
-    lifxsh.on(args.name);
+    let opts = args.options;
+    lifxsh.on(args.name, opts.duration);
     cb();
   });
 
 vorpal
-  .command('off <name>')
-  .description('Turns light off.')
+  .command('off <name>', 'Turn light off.')
+  .option('-d, --duration [ms]', 'Duration (ms)')
   .action((args, cb) => {
-    lifxsh.off(args.name);
+    let opts = args.options;
+    lifxsh.off(args.name, opts.duration);
+    cb();
+  });
+
+vorpal
+  .command('color <name>', 'Change light color.')
+  .option('-h, --hue [value]', 'Hue (0-360)')
+  .option('-s, --saturation [value]', 'Saturation (0-100)')
+  .option('-b, --brightness [value]', 'Brightness (0-100)')
+  .option('-k, --kelvin [value]', 'Kelvin (2500-9500)')
+  .option('-d, --duration [ms]', 'Duration (ms)')
+  .action((args, cb) => {
+    let opts = args.options;
+    let color = {
+      hue: opts.hue,
+      saturation: opts.saturation,
+      brightness: opts.brightness,
+      kelvin: opts.kelvin
+    }
+    lifxsh.color(args.name, color, opts.duration);
     cb();
   });
 
