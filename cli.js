@@ -4,6 +4,7 @@
 
 const vorpal = require('vorpal')();
 const lifxsh = require('./lib/lifxsh');
+const mapper = require('./lib/mapper');
 
 vorpal
   .command('list', 'List connected lights.')
@@ -32,6 +33,19 @@ vorpal
 
 vorpal
   .command('color <name>', 'Change light color.')
+  .autocompletion(function(text, iteration, cb) {
+    let lightNames = mapper.getNames();
+    if (iteration > 1) {
+      cb(void 0, lightNames);
+    } else {
+      let match = this.match(text, lightNames);
+      if (match) {
+        cb(void 0, lightNames);
+      } else {
+        cb(void 0, void 0);
+      }
+    }
+  })
   .option('-h, --hue [value]', 'Hue (0-360)')
   .option('-s, --saturation [value]', 'Saturation (0-100)')
   .option('-b, --brightness [value]', 'Brightness (0-100)')
