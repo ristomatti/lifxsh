@@ -58,7 +58,7 @@ vorpal
       saturation: opts.saturation,
       brightness: opts.brightness,
       kelvin: opts.kelvin
-    }
+    };
     lifxsh.color(args.name, color, opts.duration);
     cb();
   });
