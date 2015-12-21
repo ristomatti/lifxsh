@@ -28,3 +28,6 @@ node_modules
 
 # IntelliJ project directory
 .idea
+
+# Visual Studio Code typings
+typings/*
