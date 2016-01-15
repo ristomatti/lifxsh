@@ -33,24 +33,26 @@ vorpal
 
 vorpal
   .command('color <name>', 'Change light color.')
-  .autocompletion(function(text, iteration, cb) {
-    let lightNames = mapper.getNames();
-    if (iteration > 1) {
-      cb(void 0, lightNames);
-    } else {
-      let match = this.match(text, lightNames);
-      if (match) {
-        cb(void 0, lightNames);
-      } else {
-        cb(void 0, void 0);
-      }
-    }
-  })
   .option('-h, --hue [value]', 'Hue (0-360)')
   .option('-s, --saturation [value]', 'Saturation (0-100)')
   .option('-b, --brightness [value]', 'Brightness (0-100)')
   .option('-k, --kelvin [value]', 'Kelvin (2500-9500)')
   .option('-d, --duration [ms]', 'Duration (ms)')
+  .autocompletion(function(text, iteration, cb) {
+    // TODO: move to a separate function to be used in all commands
+    let lastToken = text.split(' ').pop();
+    let lightNames = mapper.getNames();
+    let match = this.match(lastToken, lightNames);
+
+    if (match) {
+      var input = this.parent.ui.input();
+      let endIndex = match.indexOf(lastToken) + lastToken.length;
+      let remainder = match.substr(endIndex);
+      cb(void 0, input + remainder);
+    } else {
+      cb(void 0, lightNames);
+    }
+  })
   .action((args, cb) => {
     let opts = args.options;
     let color = {
