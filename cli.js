@@ -73,8 +73,22 @@ vorpal
     process.exit(0);
   });
 
-vorpal
-  .delimiter('lifx> ')
-  .show();
-
 lifxsh.connect();
+
+// use cli arguments if found, otherwise use interactive mode
+if (process.argv.length > 2) {
+  // allow lifxsh connection to be initialised, parse arguments and exit
+  setTimeout(() => {
+    //var result = vorpal.parse(process.argv);
+    vorpal.parse(process.argv);
+    setTimeout(() => {
+      process.exit(0);
+    }, 50);
+  }, 750);
+}
+else {
+  // display Vorpal prompt
+  vorpal
+    .delimiter('lifx> ')
+    .show();
+}
