@@ -3,8 +3,12 @@
 'use strict';
 
 const vorpal = require('vorpal')();
+const homeOrTmp = require('home-or-tmp');
 const lifxsh = require('./lib/lifxsh');
 const mapper = require('./lib/mapper');
+
+// storage path for command history and settings
+const STORAGE_PATH = homeOrTmp + '/.lifxsh';
 
 vorpal
   .command('list', 'List connected lights.')
@@ -87,8 +91,10 @@ if (process.argv.length > 2) {
   }, 750);
 }
 else {
-  // display Vorpal prompt
+  // display Vorpal prompt, initialize command history
   vorpal
     .delimiter('lifx> ')
+    .historyStoragePath(STORAGE_PATH)
+    .history()
     .show();
 }
