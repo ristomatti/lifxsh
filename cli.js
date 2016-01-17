@@ -23,6 +23,7 @@ vorpal
 vorpal
   .command('on <name>', 'Turn light on.')
   .option('-d, --duration [ms]', 'Duration (ms)')
+  .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
     lifxsh.on(args.name, opts.duration);
@@ -32,6 +33,7 @@ vorpal
 vorpal
   .command('off <name>', 'Turn light off.')
   .option('-d, --duration [ms]', 'Duration (ms)')
+  .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
     lifxsh.off(args.name, opts.duration);
@@ -45,21 +47,7 @@ vorpal
   .option('-b, --brightness [value]', 'Brightness (0-100)')
   .option('-k, --kelvin [value]', 'Kelvin (2500-9500)')
   .option('-d, --duration [ms]', 'Duration (ms)')
-  .autocompletion(function(text, iteration, cb) {
-    // TODO: move to a separate function to be used in all commands
-    let lastToken = text.split(' ').pop();
-    let lightNames = mapper.getNames();
-    let match = this.match(lastToken, lightNames);
-
-    if (match) {
-      var input = this.parent.ui.input();
-      let endIndex = match.indexOf(lastToken) + lastToken.length;
-      let remainder = match.substr(endIndex);
-      cb(void 0, input + remainder);
-    } else {
-      cb(void 0, lightNames);
-    }
-  })
+  .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
     let color = {
@@ -74,11 +62,29 @@ vorpal
 
 vorpal
   .find('exit')
-  .description('Exits lifxsh.')
+  .description('Exit lifxsh.')
   .action((args, cb) => {
     lifxsh.disconnect();
     process.exit(0);
   });
+
+/**
+ * Vorpal command light name autocompletion.
+ */
+function lightNameAutocompletion(text, iteration, cb) {
+  let lastToken = text.split(' ').pop();
+  let lightNames = mapper.getNames();
+  let match = this.match(lastToken, lightNames);
+
+  if (match) {
+    var input = this.parent.ui.input();
+    let endIndex = match.indexOf(lastToken) + lastToken.length;
+    let remainder = match.substr(endIndex);
+    cb(void 0, input + remainder);
+  } else {
+    cb(void 0, lightNames);
+  }
+}
 
 // use cli arguments if found, otherwise use interactive mode
 if (process.argv.length > 2) {
