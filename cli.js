@@ -3,12 +3,16 @@
 'use strict';
 
 const vorpal = require('vorpal')();
+const chalk = require('chalk');
 const homeOrTmp = require('home-or-tmp');
 const lifxsh = require('./lib/lifxsh');
 const mapper = require('./lib/mapper');
 
-// storage path for command history and settings
-const STORAGE_PATH = homeOrTmp + '/.lifxsh';
+/**
+ * Constants
+ */
+const STORAGE_PATH = homeOrTmp + '/.lifxsh'; // settings, command history
+const PROMPT = chalk.magenta.bold('LIFX>'); // prompt
 
 // connect LIFX client
 lifxsh.connect();
@@ -21,27 +25,27 @@ vorpal
   });
 
 vorpal
-  .command('on <name>', 'Turn light on.')
+  .command('on <names...>', 'Turn light(s) on.')
   .option('-d, --duration [ms]', 'Duration (ms)')
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
-    lifxsh.on(args.name, opts.duration);
+    lifxsh.on(args.names, opts.duration);
     cb();
   });
 
 vorpal
-  .command('off <name>', 'Turn light off.')
+  .command('off <names...>', 'Turn light(s) off.')
   .option('-d, --duration [ms]', 'Duration (ms)')
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
-    lifxsh.off(args.name, opts.duration);
+    lifxsh.off(args.names, opts.duration);
     cb();
   });
 
 vorpal
-  .command('color <name>', 'Change light color.')
+  .command('color <names...>', 'Change color of light(s).')
   .option('-h, --hue [value]', 'Hue (0-360)')
   .option('-s, --saturation [value]', 'Saturation (0-100)')
   .option('-b, --brightness [value]', 'Brightness (0-100)')
@@ -56,7 +60,7 @@ vorpal
       brightness: opts.brightness,
       kelvin: opts.kelvin
     };
-    lifxsh.color(args.name, color, opts.duration);
+    lifxsh.color(args.names, color, opts.duration);
     cb();
   });
 
@@ -99,7 +103,7 @@ if (process.argv.length > 2) {
 else {
   // display Vorpal prompt, initialize command history
   vorpal
-    .delimiter('lifx> ')
+    .delimiter(PROMPT)
     .historyStoragePath(STORAGE_PATH)
     .history('')
     .show();
