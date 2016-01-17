@@ -10,6 +10,9 @@ const mapper = require('./lib/mapper');
 // storage path for command history and settings
 const STORAGE_PATH = homeOrTmp + '/.lifxsh';
 
+// connect LIFX client
+lifxsh.connect();
+
 vorpal
   .command('list', 'List connected lights.')
   .action((args, cb) => {
@@ -77,18 +80,15 @@ vorpal
     process.exit(0);
   });
 
-lifxsh.connect();
-
 // use cli arguments if found, otherwise use interactive mode
 if (process.argv.length > 2) {
   // allow lifxsh connection to be initialised, parse arguments and exit
   setTimeout(() => {
-    //var result = vorpal.parse(process.argv);
     vorpal.parse(process.argv);
     setTimeout(() => {
       process.exit(0);
-    }, 50);
-  }, 750);
+    }, 1000);
+  }, 1000);
 }
 else {
   // display Vorpal prompt, initialize command history
