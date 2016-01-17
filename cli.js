@@ -95,6 +95,6 @@ else {
   vorpal
     .delimiter('lifx> ')
     .historyStoragePath(STORAGE_PATH)
-    .history()
+    .history('')
     .show();
 }
