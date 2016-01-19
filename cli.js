@@ -3,10 +3,10 @@
 'use strict';
 
 const vorpal = require('vorpal')();
-const chalk = require('chalk');
 const homeOrTmp = require('home-or-tmp');
 const lifxsh = require('./lib/lifxsh');
 const mapper = require('./lib/mapper');
+const chalk = vorpal.chalk;
 
 /**
  * Constants
