@@ -34,8 +34,8 @@ let log = {
       'ID',
       'IP'];
     let colors = ['bold', 'bold', 'bold', 'bold', 'bold'];
-    let table = cliff.stringifyObjectRows(lights, properties, colors);
-    vorpal.log(table);
+    let msg = cliff.stringifyObjectRows(lights, properties, colors);
+    vorpal.log(msg);
   },
 
   info: function(msg) {

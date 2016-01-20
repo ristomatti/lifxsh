@@ -34,3 +34,6 @@ typings/*
 
 # Visual Studio Code debug launch configuration
 .vscode/launch.json
+
+# Babel build directory
+dist

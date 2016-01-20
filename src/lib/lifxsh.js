@@ -34,8 +34,9 @@ let lifxsh = {
    * List connected lights.
    */
   list: function () {
-    let lightsList = [];
+    let lights = [];
     let statePromises = [];
+    // TODO: Create list from cache
     let onlineOffline = _.concat(client.lights('on'), client.lights('off'));
 
     onlineOffline.forEach(light => {
@@ -51,12 +52,12 @@ let lifxsh = {
         lightProperties.Temperature = state.color.kelvin + 'K';
         lightProperties.ID = light.id;
         lightProperties.IP = light.address;
-        lightsList.push(lightProperties);
+        lights.push(lightProperties);
       })
     });
 
     Promise.all(statePromises).then(() => {
-      log.table(lightsList);
+      log.table(lights);
     });
   },
 
