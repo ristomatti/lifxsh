@@ -31,3 +31,6 @@ node_modules
 
 # Visual Studio Code typings
 typings/*
+
+# Visual Studio Code debug launch configuration
+.vscode/launch.json
