@@ -1,9 +1,10 @@
 'use strict';
 
-const _ = require('lodash');
-const lifx = require('node-lifx');
-const mapper = require('./mapper');
-const log = require('./log');
+const _ = require('lodash'),
+  lifx = require('node-lifx'),
+  util = require('util'),
+  mapper = require('./mapper'),
+  log = require('./log');
 
 // default change duration
 const DEFAULT_DURATION = 500;
@@ -18,7 +19,7 @@ let lifxsh = {
   /**
    * Initialize connection to lights.
    */
-  connect: function() {
+  connect: function () {
     initEventListeners();
     client.init();
   },
@@ -26,7 +27,7 @@ let lifxsh = {
   /**
    * Disconnect from lights.
    */
-  disconnect: function() {
+  disconnect: function () {
     client.destroy();
   },
 
@@ -34,30 +35,37 @@ let lifxsh = {
    * List connected lights.
    */
   list: function () {
-    let lights = [];
-    let statePromises = [];
-    // TODO: Create list from cache
-    let onlineOffline = _.concat(client.lights('on'), client.lights('off'));
-
-    onlineOffline.forEach(light => {
-      let statePromise = getState(light);
-      statePromises.push(getState(light));
-      statePromise.then(state => {
-        let lightProperties = {};
-        lightProperties.Label = light.label;
-        lightProperties.Power = state.power === 1 ? 'on' : 'off';
-        lightProperties.Hue = state.color.hue + '';
-        lightProperties.Saturation = state.color.saturation + '%';
-        lightProperties.Brightness = state.color.brightness + '%';
-        lightProperties.Temperature = state.color.kelvin + 'K';
-        lightProperties.ID = light.id;
-        lightProperties.IP = light.address;
-        lights.push(lightProperties);
-      })
-    });
-
-    Promise.all(statePromises).then(() => {
+    getLightStates((light, state) => {
+      return {
+        Label: light.label,
+        Power: state.power === 1 ? 'on' : 'off',
+        Hue: state.color.hue,
+        Saturation: state.color.saturation + '%',
+        Brightness: state.color.brightness + '%',
+        Temperature: state.color.kelvin + 'K',
+        ID: light.id,
+        IP: light.address
+      };
+    }).then(lights => {
       log.table(lights);
+    });
+  },
+
+  /**
+   * Monitor connected lights.
+   */
+  monitor: function () {
+    getLightStates((light, state) => {
+      return {
+        label: state.label,
+        power: state.power === 1 ? 'on' : 'off',
+        hue: state.color.hue,
+        saturation: state.color.saturation,
+        brightness: state.color.brightness,
+        kelvin: state.color.kelvin
+      };
+    }).then(lights => {
+      log.monitor(lights);
     });
   },
 
@@ -67,11 +75,11 @@ let lifxsh = {
    * @param {Array} names - Light names
    * @param {number} duration - Duration (ms).
    */
-  on: function(names, duration) {
+  on: function (names, duration) {
     let lights = findLights(names);
-    lights.forEach(light => {
+    for (let light of lights) {
       light.on(duration || DEFAULT_DURATION);
-    });
+    }
   },
 
   /**
@@ -80,11 +88,11 @@ let lifxsh = {
    * @param {Array} names - Light names
    * @param {number} duration - Duration (ms).
    */
-  off: function(names, duration) {
+  off: function (names, duration) {
     let lights = findLights(names);
-    lights.forEach(light => {
-      light.off(duration || DEFAULT_DURATION);
-    });
+    for (let light of lights) {
+      light.off(duration || DEFAULT_DURATION);
+    }
   },
 
   /**
@@ -94,9 +102,9 @@ let lifxsh = {
    * @param {Object} color - Color parameters
    * @param {number} duration - Duration (ms)
    */
-  color: function(names, color, duration) {
+  color: function (names, color, duration) {
     let lights = findLights(names);
-    lights.forEach(light => {
+    for (let light of lights) {
       getState(light)
         .then(state => {
           _.defaults(color, state.color) // merge params with current state
@@ -106,7 +114,7 @@ let lifxsh = {
         .catch(reason => {
           log.error(reason);
         });
-    });
+    }
   }
 }
 
@@ -149,13 +157,33 @@ function getState(light) {
     if (cachedState) {
       resolve(cachedState);
     }
-    updateState(light)
-      .then(state => {
-        resolve(state);
+    updateState(light).then(state => {
+      resolve(state);
+    }).catch(reason => {
+      reject(Error(reason));
+    });
+  });
+}
+
+function getLightStates(callback) {
+  return new Promise((resolve, reject) => {
+    let lights = [];
+    let statePromises = [];
+    // TODO: Create list from cache
+    let onlineOffline = _.concat(client.lights('on'), client.lights('off'));
+
+    for (let light of onlineOffline) {
+      let statePromise = getState(light);
+      statePromises.push(statePromise);
+      statePromise.then(state => {
+        let lightProperties = callback(light, state);
+        lights.push(lightProperties);
       })
-      .catch(reason => {
-        reject(Error(reason));
-      });
+    }
+
+    Promise.all(statePromises).then(() => {
+      resolve(lights);
+    });
   });
 }
 
@@ -207,24 +235,19 @@ function initEventListeners() {
     light.getLabel(() => {
       mapper.add(light.id, light.label);
     });
-    updateState(light)
-      .then(state => {
-        log.found(light, state);
-      });
+    updateState(light).then(state => {
+      log.found(light, state);
+    });
   });
 
   client.on('light-online', light => {
-    updateState(light)
-      .then(state => {
-        log.online(light, state);
-      });
+    updateState(light).then(state => {
+      log.online(light, state);
+    });
   });
 
   client.on('light-offline', light => {
-    updateState(light)
-      .then(state => {
-        log.offline(light, state);
-      });
+    log.offline(light);
   });
 }
 

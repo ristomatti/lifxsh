@@ -50,7 +50,7 @@ let mapper = {
   /**
    * Get list of light names and groups.
    */
-  getNames: function() {
+  getNames: function () {
     let names = _.keys(nameToId).sort();
     names.push('all');
     return names;

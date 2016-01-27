@@ -25,6 +25,13 @@ vorpal
   });
 
 vorpal
+  .command('monitor', 'Monitor light state.')
+  .action((args, cb) => {
+    lifxsh.monitor();
+    cb();
+  });
+
+vorpal
   .command('on <names...>', 'Turn light(s) on.')
   .option('-d, --duration [ms]', 'Duration (ms)')
   .autocompletion(lightNameAutocompletion)
@@ -99,8 +106,7 @@ if (process.argv.length > 2) {
       process.exit(0);
     }, 1000);
   }, 1000);
-}
-else {
+} else {
   // display Vorpal prompt, initialize command history
   vorpal
     .delimiter(PROMPT)

@@ -4,6 +4,7 @@
 		"**/.git": true,
 		"**/.DS_Store": true,
     "dist/**": true,
-    "**/.idea": true
+    "**/.idea": true,
+    "**/node_modules": false
 	}
 }
