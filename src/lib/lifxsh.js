@@ -1,9 +1,9 @@
 'use strict';
 
-const _ = require('lodash');
-const lifx = require('node-lifx');
+const _      = require('lodash');
+const lifx   = require('node-lifx');
 const mapper = require('./mapper');
-const log = require('./log');
+const log    = require('./log');
 
 // default change duration
 const DEFAULT_DURATION = 500;

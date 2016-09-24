@@ -2,11 +2,12 @@
 
 'use strict';
 
-const vorpal = require('vorpal')();
+const _         = require('lodash');
+const vorpal    = require('vorpal')();
+const chalk     = vorpal.chalk;
 const homeOrTmp = require('home-or-tmp');
-const lifxsh = require('./lib/lifxsh');
-const mapper = require('./lib/mapper');
-const chalk = vorpal.chalk;
+const lifxsh    = require('./lib/lifxsh');
+const mapper    = require('./lib/mapper');
 
 /**
  * Constants
@@ -54,9 +55,10 @@ vorpal
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
+    let hasKelvin = _.isNumber(opts.kelvin);
     let color = {
       hue: opts.hue,
-      saturation: opts.saturation,
+      saturation: hasKelvin ? 0 : opts.saturation,
       brightness: opts.brightness,
       kelvin: opts.kelvin
     };
