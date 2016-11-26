@@ -37,3 +37,5 @@ typings/*
 
 # Babel build directory
 dist
+
+.history
