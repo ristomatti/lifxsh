@@ -55,10 +55,9 @@ vorpal
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
-    let hasKelvin = _.isNumber(opts.kelvin);
     let color = {
       hue: opts.hue,
-      saturation: hasKelvin ? 0 : opts.saturation,
+      saturation: getSaturation(opts),
       brightness: opts.brightness,
       kelvin: opts.kelvin
     };
@@ -73,6 +72,23 @@ vorpal
     lifxsh.disconnect();
     process.exit(0);
   });
+
+/**
+ * If saturation is omitted, use 0% saturation when kelvin is defined, 100% if not.
+ *
+ * @param {any} opts
+ * @returns Saturation value.
+ */
+function getSaturation(opts) {
+  if (_.isNumber(opts.saturation)) {
+    return opts.saturation;
+  } else if (_.isNumber(opts.kelvin)) {
+    return 0;
+  } else if (_.isNumber(opts.hue)) {
+    return 100;
+  }
+  return;
+}
 
 /**
  * Vorpal command light name autocompletion.
