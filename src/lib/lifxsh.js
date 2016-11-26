@@ -18,7 +18,7 @@ let lifxsh = {
   /**
    * Initialize connection to lights.
    */
-  connect: function() {
+  connect: function () {
     initEventListeners();
     client.init();
   },
@@ -26,7 +26,7 @@ let lifxsh = {
   /**
    * Disconnect from lights.
    */
-  disconnect: function() {
+  disconnect: function () {
     client.destroy();
   },
 
@@ -36,7 +36,6 @@ let lifxsh = {
   list: function () {
     let lights = [];
     let statePromises = [];
-    // TODO: Create list from cache
     let onlineOffline = _.concat(client.lights('on'), client.lights('off'));
 
     onlineOffline.forEach(light => {
@@ -67,7 +66,7 @@ let lifxsh = {
    * @param {Array} names - Light names
    * @param {number} duration - Duration (ms).
    */
-  on: function(names, duration) {
+  on: function (names, duration) {
     let lights = findLights(names);
     lights.forEach(light => {
       light.on(duration || DEFAULT_DURATION);
@@ -80,10 +79,10 @@ let lifxsh = {
    * @param {Array} names - Light names
    * @param {number} duration - Duration (ms).
    */
-  off: function(names, duration) {
+  off: function (names, duration) {
     let lights = findLights(names);
     lights.forEach(light => {
-      light.off(duration || DEFAULT_DURATION);
+      light.off(duration || DEFAULT_DURATION);
     });
   },
 
@@ -94,13 +93,14 @@ let lifxsh = {
    * @param {Object} color - Color parameters
    * @param {number} duration - Duration (ms)
    */
-  color: function(names, color, duration) {
+  color: function (names, color, duration) {
     let lights = findLights(names);
     lights.forEach(light => {
       getState(light)
         .then(state => {
-          _.defaults(color, state.color) // merge params with current state
+          _.defaults(color, state.color); // merge params with current state
           changeColor(light, color, duration || DEFAULT_DURATION);
+          state.color = color;
           cache.state[light.id] = state;
         })
         .catch(reason => {
@@ -148,14 +148,15 @@ function getState(light) {
   return new Promise((resolve, reject) => {
     if (cachedState) {
       resolve(cachedState);
+    } else {
+      updateState(light)
+        .then(state => {
+          resolve(state);
+        })
+        .catch(reason => {
+          reject(Error(reason));
+        });
     }
-    updateState(light)
-      .then(state => {
-        resolve(state);
-      })
-      .catch(reason => {
-        reject(Error(reason));
-      });
   });
 }
 
@@ -210,6 +211,9 @@ function initEventListeners() {
     updateState(light)
       .then(state => {
         log.found(light, state);
+      })
+      .catch(reason => {
+        reject(Error(reason));
       });
   });
 
@@ -217,14 +221,13 @@ function initEventListeners() {
     updateState(light)
       .then(state => {
         log.online(light, state);
+      }).catch(reason => {
+        reject(Error(reason));
       });
   });
 
   client.on('light-offline', light => {
-    updateState(light)
-      .then(state => {
-        log.offline(light, state);
-      });
+    log.offline(light);
   });
 }
 

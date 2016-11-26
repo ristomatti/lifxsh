@@ -18,7 +18,7 @@ let log = {
     logEvent(event, light);
   },
 
-  offline: function(light, state) {
+  offline: function(light) {
     let event = chalk.bgRed.white.bold(' OFFLINE ');
     logEvent(event, light);
   },
@@ -39,19 +39,19 @@ let log = {
   },
 
   info: function(msg) {
-    vorpal.log(chalk.green('INFO: ') + msg);
+    timestamp(chalk.green('INFO: ') + msg);
   },
 
   warn: function(msg) {
-    vorpal.log(chalk.yellow('WARNING: ') + msg);
+    timestamp(chalk.yellow('WARNING: ') + msg);
   },
 
   error: function(msg) {
-    vorpal.log(chalk.red('ERROR: ') + msg);
+    timestamp(chalk.red('ERROR: ') + msg);
   },
 
   debug: function(object) {
-    vorpal.log(chalk.cyan(util.inspect(object)));
+    timestamp(chalk.cyan(util.inspect(object)));
   }
 };
 
