@@ -61,7 +61,7 @@ let mapper = {
  * Use lowercase keys.
  */
 function getKey(name) {
-  return name.toLowerCase();
+  return name ? name.toLowerCase() : null;
 }
 
 // Expose mapper
