@@ -1,8 +1,14 @@
+# Source
 src
-node_modules
-typings
+
+# Yarn
+yarn.lock
+
+# Editors
+jsconfig.json
 .vscode
 .idea
 .editorconfig
 .jsbeautifyrc
 .jshintrc
+.tern-project
