@@ -66,10 +66,10 @@ let lifxsh = {
    * @param {Array} names - Light names
    * @param {number} duration - Duration (ms).
    */
-  on: function (names, duration) {
+  on: function (names, duration = DEFAULT_DURATION) {
     let lights = findLights(names);
     lights.forEach(light => {
-      light.on(duration || DEFAULT_DURATION);
+      light.on(duration);
     });
   },
 
@@ -79,10 +79,10 @@ let lifxsh = {
    * @param {Array} names - Light names
    * @param {number} duration - Duration (ms).
    */
-  off: function (names, duration) {
+  off: function (names, duration = DEFAULT_DURATION) {
     let lights = findLights(names);
     lights.forEach(light => {
-      light.off(duration || DEFAULT_DURATION);
+      light.off(duration);
     });
   },
 
@@ -93,13 +93,13 @@ let lifxsh = {
    * @param {Object} color - Color parameters
    * @param {number} duration - Duration (ms)
    */
-  color: function (names, color, duration) {
+  color: function (names, color, duration = DEFAULT_DURATION) {
     let lights = findLights(names);
     lights.forEach(light => {
       getState(light)
         .then(state => {
           _.defaults(color, state.color); // merge params with current state
-          changeColor(light, color, duration || DEFAULT_DURATION);
+          changeColor(light, color, duration);
           state.color = color;
           cache.state[light.id] = state;
         })
@@ -107,11 +107,24 @@ let lifxsh = {
           log.error(reason);
         });
     });
-  }
+  },
+
+  /**
+   * Set maximum infrared brightness of light(s) off.
+   *
+   * @param {Array} names - Light names
+   * @param {number} brightness - IR LED brightness percentage.
+   */
+  maxIR: function (names, brightness) {
+    let lights = findLights(names);
+    lights.forEach(light => {
+      light.maxIR(brightness);
+    });
+  },
 }
 
 /**
- * Find light or lights using one or more names.
+ * Find lights by name.
  *
  * @param {Array} names - Light names
  * @return {Array} - Array of lights

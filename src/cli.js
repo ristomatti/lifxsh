@@ -48,7 +48,7 @@ vorpal
   });
 
 vorpal
-  .command('color[names...]', 'Change color of light(s).')
+  .command('color [names...]', 'Change color of light(s).')
   .option('-h, --hue [value]', 'Hue (0-360)')
   .option('-s, --saturation [value]', 'Saturation (0-100)')
   .option('-b, --brightness [value]', 'Brightness (0-100)')
@@ -65,6 +65,17 @@ vorpal
     };
     let names = getLightNames(args.names);
     lifxsh.color(names, color, opts.duration);
+    cb();
+  });
+
+vorpal
+  .command('ir [names...]', 'Set infrared settings.')
+  .option('-b, --brightness [value]', 'Brightness (0-100)')
+  .autocompletion(lightNameAutocompletion)
+  .action((args, cb) => {
+    let opts = args.options;
+    let names = getLightNames(args.names);
+    lifxsh.maxIR(names, opts.brightness);
     cb();
   });
 
