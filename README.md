@@ -4,7 +4,7 @@ Node.js based command line interface for controlling LIFX lamps. Uses the LIFX L
 
 ![lifxsh example screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-screenshot.png)
 
-## Features
+## Release notes
 
 ### Version 0.7.0
 
