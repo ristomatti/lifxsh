@@ -6,6 +6,10 @@ Node.js based command line interface for controlling LIFX lamps. Uses the LIFX L
 
 ## Features
 
+### Version 0.7.0
+
+- preliminary infrared LED support added (brightness can be changed but the light list information still needs to be updated)
+
 ### Version 0.6.x
 
 - works with all current LIFX products (no support for LIFX+ or LIFX Z special
@@ -29,10 +33,9 @@ Node.js based command line interface for controlling LIFX lamps. Uses the LIFX L
   - change color using hue/saturation/brightness and luminosity (kelvin) (with optional transition delay)
 
 ### Next version
-- support for LIFX+ IR LED brightness (almost complete)
+- support for LIFX Z individual color zones
 
 ### Planned
-- support for LIFX Z individual color zones
 - show light type in listing
 - configuration file
   - alias names for lights
