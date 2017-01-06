@@ -1215,9 +1215,9 @@ nan@^2.3.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.4.0.tgz#fb3c59d45fe4effe215f0b890f8adf6eb32d2232"
 
-node-lifx@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/node-lifx/-/node-lifx-0.7.0.tgz#5b335b7472a704cd30e33a1e1f50dcc3f65f23ec"
+node-lifx@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/node-lifx/-/node-lifx-0.8.0.tgz#2f96993562100b9155e2ec49ddecbfc33c9a3dae"
   dependencies:
     eventemitter3 "^2.0.2"
     lodash "^4.5.0"
