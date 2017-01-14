@@ -1,6 +1,6 @@
 {
   "name": "lifxsh",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Interactive command line interface for controlling LIFX lamps. Uses the LIFX LAN protocol for communication with the lights.",
   "main": "./dist/cli.js",
   "bin": "./dist/cli.js",
@@ -38,7 +38,7 @@
     "cliff": "^0.1.10",
     "home-or-tmp": "^2.0.0",
     "lodash": "^4.16.0",
-    "node-lifx": "^0.8.0",
+    "node-lifx": "git@github.com:MariusRumpf/node-lifx.git#develop",
     "vorpal": "^1.11.0"
   },
   "devDependencies": {
