@@ -80,6 +80,27 @@ vorpal
   });
 
 vorpal
+  .command('zone [name] [startZone] [endZone]', 'Change color of MultiZone light zones.')
+  .option('-h, --hue [value]', 'Hue (0-360)')
+  .option('-s, --saturation [value]', 'Saturation (0-100)')
+  .option('-b, --brightness [value]', 'Brightness (0-100)')
+  .option('-k, --kelvin [value]', 'Kelvin (2500-9000)')
+  .option('-d, --duration [ms]', 'Duration (ms)')
+  .option('-a, --apply', 'Apply immediately')
+  .autocompletion(lightNameAutocompletion)
+  .action((args, cb) => {
+    let opts = args.options;
+    let zoneColor = {
+      hue: opts.hue,
+      saturation: getSaturation(opts),
+      brightness: opts.brightness,
+      kelvin: opts.kelvin
+    };
+    lifxsh.colorZones(args.name, args.startZone, args.endZone, zoneColor, opts.duration, opts.apply);
+    cb();
+  });
+
+vorpal
   .find('exit')
   .description('Exit lifxsh.')
   .action((args, cb) => {
@@ -141,8 +162,7 @@ if (process.argv.length > 2) {
       process.exit(0);
     }, 1000);
   }, 1000);
-}
-else {
+} else {
   // display Vorpal prompt, initialize command history
   vorpal
     .delimiter(PROMPT)

@@ -1,14 +1,21 @@
 # lifxsh
 
-Node.js based command line interface for controlling LIFX lamps. Uses the LIFX LAN protocol for communication.
+Node.js based command line interface for controlling LIFX lamps. Uses the LIFX
+LAN protocol for communication.
 
-![lifxsh example screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-screenshot.png)
+![lifxsh example
+screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-screenshot.png)
 
 ## Release notes
 
+### Version 0.8.0
+
+- preliminary support for MultiZone lights with "zone" command
+
 ### Version 0.7.0
 
-- preliminary infrared LED support added (brightness can be changed but the light list information still needs to be updated)
+- preliminary infrared LED support added (brightness can be changed but the
+  light list information still needs to be updated)
 
 ### Version 0.6.x
 
@@ -24,18 +31,18 @@ Node.js based command line interface for controlling LIFX lamps. Uses the LIFX L
   - logs individual bulb/strip online/offline statuses
   - list all lights with power state, color information and IP address
   - multiple light names can be listed to set all at once
-  - alias `all` can be used to target all lights, alternatively name can be omitted
+  - alias `all` can be used to target all lights, alternatively name can be
+    omitted
   - caches the previous color properties fetched from lights to allow changing
     only single attribute (LAN protocol defines hue/saturation/brightness need
     to always be sent together)
 - supports most LIFX functionalities
   - on/off toggle with optional transition delay
-  - change color using hue/saturation/brightness and luminosity (kelvin) (with optional transition delay)
+  - change color using hue/saturation/brightness and luminosity (kelvin) (with
+    optional transition delay)
 
-### Next version
-- support for LIFX Z individual color zones
+### Planned features
 
-### Planned
 - show light type in listing
 - configuration file
   - alias names for lights
@@ -52,15 +59,11 @@ Node.js based command line interface for controlling LIFX lamps. Uses the LIFX L
 
 ### Global (might require sudo)
 
-```bash
-npm install --global lifxsh
-```
+```bash npm install --global lifxsh ```
 
 ### Local
 
-```bash
-npm install lifxsh
-```
+```bash npm install lifxsh ```
 
 ## Usage
 

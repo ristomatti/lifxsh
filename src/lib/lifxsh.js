@@ -1,9 +1,9 @@
 'use strict';
 
-const _      = require('lodash');
-const lifx   = require('node-lifx');
+const _ = require('lodash');
+const lifx = require('node-lifx');
 const mapper = require('./mapper');
-const log    = require('./log');
+const log = require('./log');
 
 // default change duration
 const DEFAULT_DURATION = 500;
@@ -64,7 +64,7 @@ let lifxsh = {
    * Turn light(s) on.
    *
    * @param {Array} names - Light names
-   * @param {number} duration - Duration (ms).
+   * @param {number} duration - Duration (ms)
    */
   on: function (names, duration = DEFAULT_DURATION) {
     let lights = findLights(names);
@@ -77,7 +77,7 @@ let lifxsh = {
    * Turn light(s) off.
    *
    * @param {Array} names - Light names
-   * @param {number} duration - Duration (ms).
+   * @param {number} duration - Duration (ms)
    */
   off: function (names, duration = DEFAULT_DURATION) {
     let lights = findLights(names);
@@ -110,10 +110,39 @@ let lifxsh = {
   },
 
   /**
+   * Change color of MultiZone light zones.
+   *
+   * @param {string} name - Light name
+   * @param {number} startZone - Start zone (first zone is 0)
+   * @param {number} endZone - End zone
+   * @param {Object} color - Color parameters
+   * @param {number} duration - Duration (ms)
+   * @param {boolean} apply - Apply changes immediately, defaults to false
+   */
+  colorZones: function (name, startZone, endZone, color, duration = DEFAULT_DURATION,
+    apply = false) {
+    let id = mapper.get(name);
+    if (_.isUndefined(name)) {
+      return;
+    }
+    let light = client.light(id);
+    light.colorZones(
+      startZone,
+      endZone,
+      color.hue,
+      color.saturation,
+      color.brightness,
+      color.kelvin,
+      duration,
+      apply
+    );
+  },
+
+  /**
    * Set maximum infrared brightness of light(s) off.
    *
    * @param {Array} names - Light names
-   * @param {number} brightness - IR LED brightness percentage.
+   * @param {number} brightness - IR LED brightness percentage
    */
   maxIR: function (names, brightness) {
     let lights = findLights(names);
