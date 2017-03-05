@@ -38,7 +38,7 @@
     "cliff": "^0.1.10",
     "home-or-tmp": "^2.0.0",
     "lodash": "^4.16.0",
-    "node-lifx": "git@github.com:MariusRumpf/node-lifx.git#develop",
+    "node-lifx": "ssh://github.com:MariusRumpf/node-lifx.git#develop",
     "vorpal": "^1.11.0"
   },
   "devDependencies": {

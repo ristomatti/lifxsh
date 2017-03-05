@@ -1563,9 +1563,9 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
 
-node-lifx@^0.8.0:
+"node-lifx@ssh://github.com:MariusRumpf/node-lifx.git#develop":
   version "0.8.0"
-  resolved "https://registry.yarnpkg.com/node-lifx/-/node-lifx-0.8.0.tgz#2f96993562100b9155e2ec49ddecbfc33c9a3dae"
+  resolved "ssh://github.com/MariusRumpf/node-lifx.git#45c7ab8f88799486d921e6b69e618fb479bc7f0a"
   dependencies:
     eventemitter3 "^2.0.2"
     lodash "^4.5.0"
