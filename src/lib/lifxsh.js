@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
+const { isEmpty } = require('lodash');
 const lifx = require('node-lifx');
 const mapper = require('./mapper');
 const log = require('./log');
@@ -18,9 +19,11 @@ let lifxsh = {
   /**
    * Initialize connection to lights.
    */
-  connect: function () {
+  connect: function (lights = []) {
     initEventListeners();
-    client.init();
+    const stopAfterDiscovery = isEmpty(lights) ? false : true;
+    const clientOptions = { lights, stopAfterDiscovery };
+    client.init(clientOptions);
   },
 
   /**
@@ -270,6 +273,10 @@ function initEventListeners() {
 
   client.on('light-offline', light => {
     log.offline(light);
+  });
+
+  client.on('discovery-completed', message => {
+    log.discoveryCompleted(message);
   });
 }
 

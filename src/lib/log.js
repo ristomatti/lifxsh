@@ -8,9 +8,16 @@ const cliff = require('cliff');
 const mapper = require('./mapper');
 
 let log = {
+
   found: function(light, state) {
     let event = chalk.bgBlue.white.bold(' NEW ');
     logEvent(event, light);
+  },
+
+  discoveryCompleted: function() {
+    let event = chalk.bgMagenta.white.bold(' DISCOVERY COMPLETED ');
+    let msg = `${event} All lights found`;
+    timestamp(msg);
   },
 
   online: function(light, state) {
