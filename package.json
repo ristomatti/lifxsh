@@ -37,6 +37,7 @@
   "dependencies": {
     "cliff": "^0.1.10",
     "home-or-tmp": "^2.0.0",
+    "js-yaml": "^3.10.0",
     "lodash": "^4.16.0",
     "node-lifx": "ssh://github.com:MariusRumpf/node-lifx.git#develop",
     "vorpal": "^1.11.0"

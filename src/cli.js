@@ -2,12 +2,14 @@
 
 'use strict';
 
-const _         = require('lodash');
-const vorpal    = require('vorpal')();
-const chalk     = vorpal.chalk;
+const _ = require('lodash');
+const vorpal = require('vorpal')();
+const chalk = vorpal.chalk;
 const homeOrTmp = require('home-or-tmp');
-const lifxsh    = require('./lib/lifxsh');
-const mapper    = require('./lib/mapper');
+const lifxsh = require('./lib/lifxsh');
+const mapper = require('./lib/mapper');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 /**
  * Constants
@@ -15,8 +17,14 @@ const mapper    = require('./lib/mapper');
 const STORAGE_PATH = homeOrTmp + '/.lifxsh'; // settings, command history
 const PROMPT = chalk.magenta.bold('LIFX>'); // prompt
 
+let settings = {};
+try {
+  const settingsFile = `${STORAGE_PATH}/settings.yml`;
+  settings = yaml.safeLoad(fs.readFileSync(settingsFile, 'utf8'));
+} catch (e) {}
+
 // connect LIFX client
-lifxsh.connect();
+lifxsh.connect(settings.lights);
 
 vorpal
   .command('list', 'List connected lights.')
