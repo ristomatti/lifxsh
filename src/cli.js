@@ -2,7 +2,7 @@
 
 'use strict';
 
-const _ = require('lodash');
+const { isArray, isNumber, isString } = require('lodash');
 const vorpal = require('vorpal')();
 const chalk = vorpal.chalk;
 const homeOrTmp = require('home-or-tmp');
@@ -133,11 +133,11 @@ function getLightNames(lightNames) {
  * @returns Saturation value.
  */
 function getSaturation(opts) {
-  if (_.isNumber(opts.saturation)) {
+  if (isNumber(opts.saturation)) {
     return opts.saturation;
-  } else if (_.isNumber(opts.kelvin)) {
+  } else if (isNumber(opts.kelvin)) {
     return 0;
-  } else if (_.isNumber(opts.hue)) {
+  } else if (isNumber(opts.hue)) {
     return 100;
   }
   return;
@@ -151,7 +151,9 @@ function lightNameAutocompletion(text, iteration, cb) {
   let lightNames = mapper.getNames();
   let match = this.match(lastToken, lightNames);
 
-  if (match) {
+  if (isArray(match)) {
+    cb(void 0, match);
+  } else if (isString(match)) {
     var input = this.parent.ui.input();
     let endIndex = match.indexOf(lastToken) + lastToken.length;
     let remainder = match.substr(endIndex);

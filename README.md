@@ -8,6 +8,11 @@ screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-s
 
 ## Release notes
 
+### Version 0.8.1
+
+- add support for listing known light addresses in $HOME/.lifxsh/settings.yml
+- fix bug on tab complete
+
 ### Version 0.8.0
 
 - preliminary support for MultiZone lights with "zone" command
