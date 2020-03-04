@@ -2,22 +2,19 @@
   "name": "lifxsh",
   "version": "0.8.1",
   "description": "Interactive command line interface for controlling LIFX lamps. Uses the LIFX LAN protocol for communication with the lights.",
-  "main": "./dist/cli.js",
-  "bin": "./dist/cli.js",
+  "main": "./src/cli.js",
+  "bin": "./src/cli.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "babel --presets=es2015 src -d dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "npm run clean && npm run build",
-    "start": "node dist/cli.js"
+    "start": "node src/cli.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ristomatti/lifxsh.git"
   },
   "files": [
-    "dist/cli.js",
-    "dist/lib"
+    "src/cli.js",
+    "src/lib"
   ],
   "keywords": [
     "lifx",
@@ -36,21 +33,16 @@
   "homepage": "https://github.com/ristomatti/lifxsh#readme",
   "dependencies": {
     "cliff": "^0.1.10",
-    "home-or-tmp": "^2.0.0",
-    "js-yaml": "^3.10.0",
-    "lodash": "^4.16.0",
-    "node-lifx": "ristomatti/node-lifx.git#es2015-dev",
-    "vorpal": "^1.11.0"
+    "home-or-tmp": "^3.0.0",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.15",
+    "lifx-lan-client": "^1.0.2",
+    "vorpal": "^1.12.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0",
-    "eslint": "^3.16.0",
-    "rimraf": "^2.5.0"
+    "eslint": "^6.8.0"
   },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
+  "engines": {
+    "node": ">=8.10"
   }
 }

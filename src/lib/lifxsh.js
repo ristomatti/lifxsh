@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const { isEmpty } = require('lodash');
-const lifx = require('node-lifx');
+const lifx = require('lifx-lan-client');
 const mapper = require('./mapper');
 const log = require('./log');
 
@@ -21,7 +21,7 @@ let lifxsh = {
    */
   connect: function (lights = []) {
     initEventListeners();
-    const stopAfterDiscovery = isEmpty(lights) ? false : true;
+    const stopAfterDiscovery = !isEmpty(lights);
     const clientOptions = { lights, stopAfterDiscovery };
     client.init(clientOptions);
   },
@@ -55,7 +55,7 @@ let lifxsh = {
         lightProperties.ID = light.id;
         lightProperties.IP = light.address;
         lights.push(lightProperties);
-      })
+      });
     });
 
     Promise.all(statePromises).then(() => {
@@ -153,7 +153,7 @@ let lifxsh = {
       light.maxIR(brightness);
     });
   },
-}
+};
 
 /**
  * Find lights by name.
@@ -185,7 +185,7 @@ function findLights(names) {
  * Get light state. Returns cached value or state from light if no cached value
  * is found.
  *
- * @param {Object} light - Light object from node-lifx client
+ * @param {Object} light - Light object from lifx-lan-client
  * @return {Promise} - Promise of light state
  */
 function getState(light) {
@@ -208,7 +208,7 @@ function getState(light) {
 /**
  * Update, cache and return light state.
  *
- * @param {Object} light - Light from node-lifx client
+ * @param {Object} light - Light from lifx-lan-client
  * @return {Promise} - Promise of light state
  */
 function updateState(light) {
@@ -226,7 +226,7 @@ function updateState(light) {
 /**
  * Change light color.
  *
- * @param {Object} light - Light from node-lifx client
+ * @param {Object} light - Light from lifx-lan-client
  * @param {Object} color - Color parameters
  * @param {number} duration - Change duration (ms)
  */
@@ -241,7 +241,7 @@ function changeColor(light, color, duration) {
 }
 
 /**
- * Initialize listeners for events emitted by node-lifx client.
+ * Initialize listeners for events emitted by lifx-lan-client.
  */
 function initEventListeners() {
   client.on('error', err => {
