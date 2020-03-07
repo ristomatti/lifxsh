@@ -21,7 +21,9 @@ let settings = {};
 try {
   const settingsFile = `${STORAGE_PATH}/settings.yml`;
   settings = yaml.safeLoad(fs.readFileSync(settingsFile, 'utf8'));
-} catch (e) {}
+} catch (e) {
+  // ignored
+}
 
 // connect LIFX client
 lifxsh.connect(settings.lights);
@@ -111,7 +113,7 @@ vorpal
 vorpal
   .find('exit')
   .description('Exit lifxsh.')
-  .action((args, cb) => {
+  .action(() => {
     lifxsh.disconnect();
     process.exit(0);
   });
@@ -140,7 +142,6 @@ function getSaturation(opts) {
   } else if (isNumber(opts.hue)) {
     return 100;
   }
-  return;
 }
 
 /**

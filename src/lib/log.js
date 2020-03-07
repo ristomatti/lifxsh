@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const vorpal = require('vorpal')();
 const util = require('util');
 const chalk = vorpal.chalk;
