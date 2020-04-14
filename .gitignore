@@ -39,4 +39,3 @@ typings/*
 dist
 
 .history
-package-lock.json
