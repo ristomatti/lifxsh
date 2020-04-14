@@ -8,6 +8,11 @@ screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-s
 
 ## Release notes
 
+### Version 0.9.1
+
+- remove babel transpilation
+- update dependencies
+
 ### Version 0.8.1
 
 - add support for listing known light addresses in $HOME/.lifxsh/settings.yml
