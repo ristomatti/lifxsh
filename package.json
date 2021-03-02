@@ -42,6 +42,9 @@
   "devDependencies": {
     "eslint": "^6.8.0"
   },
+  "resolutions": {
+    "lodash": "^4.17.21"
+  },
   "engines": {
     "node": ">=8.10"
   }
