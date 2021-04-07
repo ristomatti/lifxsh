@@ -6,6 +6,7 @@ const { isArray, isNumber, isString } = require('lodash');
 const vorpal = require('vorpal')();
 const chalk = vorpal.chalk;
 const homeOrTmp = require('home-or-tmp');
+const parse = require('parse-duration');
 const lifxsh = require('./lib/lifxsh');
 const mapper = require('./lib/mapper');
 const yaml = require('js-yaml');
@@ -16,6 +17,7 @@ const fs = require('fs');
  */
 const STORAGE_PATH = homeOrTmp + '/.lifxsh'; // settings, command history
 const PROMPT = chalk.magenta.bold('LIFX>'); // prompt
+const DEFAULT_DURATION = 500;
 
 let settings = {};
 try {
@@ -37,23 +39,25 @@ vorpal
 
 vorpal
   .command('on [names...]', 'Turn light(s) on.')
-  .option('-d, --duration [ms]', 'Duration (ms)')
+  .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
     let names = getLightNames(args.names);
-    lifxsh.on(names, opts.duration);
+    let duration = parseDuration(opts);
+    lifxsh.on(names, duration);
     cb();
   });
 
 vorpal
   .command('off [names...]', 'Turn light(s) off.')
-  .option('-d, --duration [ms]', 'Duration (ms)')
+  .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
     let names = getLightNames(args.names);
-    lifxsh.off(names, opts.duration);
+    let duration = parseDuration(opts);
+    lifxsh.off(names, duration);
     cb();
   });
 
@@ -63,7 +67,7 @@ vorpal
   .option('-s, --saturation [value]', 'Saturation (0-100)')
   .option('-b, --brightness [value]', 'Brightness (0-100)')
   .option('-k, --kelvin [value]', 'Kelvin (2500-9500)')
-  .option('-d, --duration [ms]', 'Duration (ms)')
+  .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
     let opts = args.options;
@@ -74,7 +78,8 @@ vorpal
       kelvin: opts.kelvin
     };
     let names = getLightNames(args.names);
-    lifxsh.color(names, color, opts.duration);
+    let duration = parseDuration(opts);
+    lifxsh.color(names, color, duration);
     cb();
   });
 
@@ -95,7 +100,7 @@ vorpal
   .option('-s, --saturation [value]', 'Saturation (0-100)')
   .option('-b, --brightness [value]', 'Brightness (0-100)')
   .option('-k, --kelvin [value]', 'Kelvin (2500-9000)')
-  .option('-d, --duration [ms]', 'Duration (ms)')
+  .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .option('-a, --apply', 'Apply immediately')
   .autocompletion(lightNameAutocompletion)
   .action((args, cb) => {
@@ -106,7 +111,8 @@ vorpal
       brightness: opts.brightness,
       kelvin: opts.kelvin
     };
-    lifxsh.colorZones(args.name, args.startZone, args.endZone, zoneColor, opts.duration, opts.apply);
+    let duration = parseDuration(opts);
+    lifxsh.colorZones(args.name, args.startZone, args.endZone, zoneColor, duration, opts.apply);
     cb();
   });
 
@@ -142,6 +148,17 @@ function getSaturation(opts) {
   } else if (isNumber(opts.hue)) {
     return 100;
   }
+}
+
+/**
+ * Parse natural language to milliseconds.
+ *
+ * @param {{ duration: number | string }} opts
+ */
+function parseDuration(opts) {
+  // @ts-ignore
+  const duration = parse(opts.duration, 'ms');
+  return duration !== null ? duration : DEFAULT_DURATION;
 }
 
 /**
