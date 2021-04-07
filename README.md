@@ -62,8 +62,7 @@ screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-s
 
 ### Known issues
 
-- occasionally crashes when tab completion is used in specific scenarios
-- unhandled exceptions that show ugly logs on the screen
+- after tab completion, sometimes first press of backspace does not register
 
 ## Install using NPM
 
