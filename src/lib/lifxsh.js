@@ -9,13 +9,13 @@ const log = require('./log');
 // default change duration
 const DEFAULT_DURATION = 500;
 
-let client = new lifx.Client();
+const client = new lifx.Client();
 
-let cache = {
+const cache = {
   state: {}
 };
 
-let lifxsh = {
+const lifxsh = {
   /**
    * Initialize connection to lights.
    */

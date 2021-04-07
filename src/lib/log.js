@@ -6,7 +6,7 @@ const chalk = vorpal.chalk;
 const cliff = require('cliff');
 const mapper = require('./mapper');
 
-let log = {
+const log = {
 
   found: function(light, state) {
     let event = chalk.bgBlue.white.bold(' NEW ');

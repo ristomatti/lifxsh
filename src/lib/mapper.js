@@ -3,9 +3,9 @@
 const _   = require('lodash');
 const log = require('./log');
 
-let nameToId = {};
+const nameToId = {};
 
-let mapper = {
+const mapper = {
   /**
    * Add light name to identifier mapping.
    *
