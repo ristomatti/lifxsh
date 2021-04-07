@@ -55,11 +55,15 @@ const lifxsh = {
         lightProperties.ID = light.id;
         lightProperties.IP = light.address;
         lights.push(lightProperties);
+      }).catch(reason => {
+        log.error(reason);
       });
     });
 
     Promise.all(statePromises).then(() => {
       log.table(lights);
+    }).catch((reason) => {
+      log.error(reason);
     });
   },
 
@@ -107,7 +111,7 @@ const lifxsh = {
           cache.state[light.id] = state;
         })
         .catch(reason => {
-          log.error(reason);
+          log.error(reason, names, color, duration);
         });
     });
   },
@@ -199,7 +203,7 @@ function getState(light) {
           resolve(state);
         })
         .catch(reason => {
-          reject(Error(reason));
+          reject(reason);
         });
     }
   });
@@ -260,7 +264,7 @@ function initEventListeners() {
         log.found(light, state);
       })
       .catch(reason => {
-        reject(Error(reason));
+        log.error(reason);
       });
   });
 
@@ -270,7 +274,7 @@ function initEventListeners() {
       .then(state => {
         log.online(light, state);
       }).catch(reason => {
-        reject(Error(reason));
+        log.error(reason);
       });
   });
 
