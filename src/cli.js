@@ -172,7 +172,7 @@ function lightNameAutocompletion(text, iteration, cb) {
   if (isArray(match)) {
     cb(void 0, match);
   } else if (isString(match)) {
-    var input = this.parent.ui.input();
+    let input = this.parent.ui.input();
     let endIndex = match.indexOf(lastToken) + lastToken.length;
     let remainder = match.substr(endIndex);
     cb(void 0, input + remainder);
