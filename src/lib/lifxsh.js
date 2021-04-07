@@ -244,11 +244,13 @@ function changeColor(light, color, duration) {
  * Initialize listeners for events emitted by lifx-lan-client.
  */
 function initEventListeners() {
-  client.on('error', err => {
+   // @ts-ignore
+   client.on('error', err => {
     log.error(err.stack);
     client.destroy();
   });
 
+  // @ts-ignore
   client.on('light-new', light => {
     light.getLabel(() => {
       mapper.add(light.id, light.label);
@@ -262,6 +264,7 @@ function initEventListeners() {
       });
   });
 
+  // @ts-ignore
   client.on('light-online', light => {
     updateState(light)
       .then(state => {
@@ -271,12 +274,14 @@ function initEventListeners() {
       });
   });
 
+  // @ts-ignore
   client.on('light-offline', light => {
     log.offline(light);
   });
 
-  client.on('discovery-completed', message => {
-    log.discoveryCompleted(message);
+  // @ts-ignore
+  client.on('discovery-completed', () => {
+    log.discoveryCompleted();
   });
 }
 
