@@ -3,8 +3,8 @@
 'use strict';
 
 const { isArray, isNumber, isString } = require('lodash');
-const vorpal = require('vorpal')();
-const chalk = vorpal.chalk;
+const vorpal = new (require('vorpal'))();
+const chalk = require('chalk');
 const homeOrTmp = require('home-or-tmp');
 const parse = require('parse-duration');
 const lifxsh = require('./lib/lifxsh');
@@ -32,33 +32,30 @@ lifxsh.connect(settings.lights);
 
 vorpal
   .command('list', 'List connected lights.')
-  .action((args, cb) => {
-    lifxsh.list();
-    cb();
+  .action(async () => {
+    await lifxsh.list();
   });
 
 vorpal
   .command('on [names...]', 'Turn light(s) on.')
   .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .autocompletion(lightNameAutocompletion)
-  .action((args, cb) => {
+  .action(async (args) => {
     let opts = args.options;
     let names = getLightNames(args.names);
     let duration = parseDuration(opts);
     lifxsh.on(names, duration);
-    cb();
   });
 
 vorpal
   .command('off [names...]', 'Turn light(s) off.')
   .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .autocompletion(lightNameAutocompletion)
-  .action((args, cb) => {
+  .action(async (args) => {
     let opts = args.options;
     let names = getLightNames(args.names);
     let duration = parseDuration(opts);
     lifxsh.off(names, duration);
-    cb();
   });
 
 vorpal
@@ -69,7 +66,7 @@ vorpal
   .option('-k, --kelvin [value]', 'Kelvin (2500-9500)')
   .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .autocompletion(lightNameAutocompletion)
-  .action((args, cb) => {
+  .action(async (args) => {
     let opts = args.options;
     let color = {
       hue: opts.hue,
@@ -80,18 +77,16 @@ vorpal
     let names = getLightNames(args.names);
     let duration = parseDuration(opts);
     lifxsh.color(names, color, duration);
-    cb();
   });
 
 vorpal
   .command('ir [names...]', 'Set infrared settings.')
   .option('-b, --brightness [value]', 'Brightness (0-100)')
   .autocompletion(lightNameAutocompletion)
-  .action((args, cb) => {
+  .action(async (args) => {
     let opts = args.options;
     let names = getLightNames(args.names);
     lifxsh.maxIR(names, opts.brightness);
-    cb();
   });
 
 vorpal
@@ -103,7 +98,7 @@ vorpal
   .option('-d, --duration [value]', 'Transition time (50ms, 5s, "1h 15min" etc.)')
   .option('-a, --apply', 'Apply immediately')
   .autocompletion(lightNameAutocompletion)
-  .action((args, cb) => {
+  .action(async (args) => {
     let opts = args.options;
     let zoneColor = {
       hue: opts.hue,
@@ -113,7 +108,6 @@ vorpal
     };
     let duration = parseDuration(opts);
     lifxsh.colorZones(args.name, args.startZone, args.endZone, zoneColor, duration, opts.apply);
-    cb();
   });
 
 vorpal
@@ -194,6 +188,7 @@ if (process.argv.length > 2) {
   // display Vorpal prompt, initialize command history
   vorpal
     .delimiter(PROMPT)
+    // @ts-ignore
     .historyStoragePath(STORAGE_PATH)
     .history('')
     .show();
