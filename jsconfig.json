@@ -2,7 +2,8 @@
   "compilerOptions": {
     "checkJs": true,
     "target": "es2015",
-    "module": "commonjs"
+    "module": "commonjs",
+    "strictNullChecks": false
   },
   "include": ["src/**/*"],
 }
