@@ -43,15 +43,16 @@ const lifxsh = {
 
     onlineOffline.forEach(light => {
       let statePromise = getState(light);
-      statePromises.push(getState(light));
+      statePromises.push(statePromise);
       statePromise.then(state => {
         let lightProperties = {};
         lightProperties.Label = light.label;
+        lightProperties.Alias = mapper.getKey(light.label);
         lightProperties.Power = state.power === 1 ? 'on' : 'off';
         lightProperties.Hue = state.color.hue + '';
-        lightProperties.Saturation = state.color.saturation + '%';
-        lightProperties.Brightness = state.color.brightness + '%';
-        lightProperties.Temperature = state.color.kelvin + 'K';
+        lightProperties['Sat.'] = state.color.saturation + '%';
+        lightProperties['Bri.'] = state.color.brightness + '%';
+        lightProperties['Temp.'] = state.color.kelvin + 'K';
         lightProperties.ID = light.id;
         lightProperties.IP = light.address;
         lights.push(lightProperties);
@@ -60,7 +61,7 @@ const lifxsh = {
       });
     });
 
-    Promise.all(statePromises).then(() => {
+    return Promise.all(statePromises).then(() => {
       log.table(lights);
     }).catch((reason) => {
       log.error(reason);
@@ -77,6 +78,7 @@ const lifxsh = {
     let lights = findLights(names);
     lights.forEach(light => {
       light.on(duration);
+      cache.state[light.id].power = 1;
     });
   },
 
@@ -90,6 +92,7 @@ const lifxsh = {
     let lights = findLights(names);
     lights.forEach(light => {
       light.off(duration);
+      cache.state[light.id].power = 0;
     });
   },
 
@@ -245,7 +248,7 @@ function changeColor(light, color, duration) {
 }
 
 /**
- * Initialize listeners for events emitted by lifx-lan-client.
+ * Initialize listeners for lifx-lan-client events.
  */
 function initEventListeners() {
    // @ts-ignore
