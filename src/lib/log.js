@@ -1,10 +1,10 @@
 'use strict';
 
-const vorpal = require('vorpal')();
+const vorpal = new (require('vorpal'))();
 const util = require('util');
-const chalk = vorpal.chalk;
+const chalk = require('chalk');
 const cliff = require('cliff');
-const mapper = require('./mapper');
+const { sortBy } =require('lodash');
 
 const log = {
 
@@ -29,18 +29,21 @@ const log = {
     logEvent(event, light);
   },
 
-  table: function (lights) {
-    let properties = [
+  table: function(/** @type any[]*/ lights) {
+    let rows = sortBy(lights, 'Label');
+    let keys = [
       'Label',
+      'Alias',
       'Power',
       'Hue',
-      'Saturation',
-      'Brightness',
-      'Temperature',
+      'Sat.',
+      'Bri.',
+      'Temp.',
       'ID',
-      'IP'];
-    let colors = ['bold', 'bold', 'bold', 'bold', 'bold'];
-    let msg = cliff.stringifyObjectRows(lights, properties, colors);
+      'IP'
+    ];
+    let colors = ['bold', 'bold', 'bold', 'bold', 'bold', 'bold'];
+    let msg = cliff.stringifyObjectRows(rows, keys, colors);
     vorpal.log(msg);
   },
 
@@ -52,8 +55,8 @@ const log = {
     timestamp(chalk.yellow('WARNING: ') + msg);
   },
 
-  error: function(msg) {
-    timestamp(chalk.red('ERROR: ') + msg);
+  error: function(msg, ...args) {
+    timestamp(chalk.red('ERROR: ') + msg, ...args);
   },
 
   debug: function(object) {
@@ -66,8 +69,8 @@ function logEvent(event, light) {
   timestamp(msg);
 }
 
-function timestamp(msg) {
-  vorpal.log(util.format('%s %s', getTime(), msg));
+function timestamp(msg, ...args) {
+  vorpal.log(util.format('%s %s', getTime(), msg), ...args);
 }
 
 function getLightInfo(light) {
