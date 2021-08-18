@@ -1,16 +1,16 @@
 'use strict';
 
-const _   = require('lodash');
+const { includes, keys } = require('lodash');
 const log = require('./log');
 
+/**
+ * @type import('lodash').Dictionary<string>
+ */
 const nameToId = {};
 
 const mapper = {
   /**
    * Add light name to identifier mapping.
-   *
-   * @param {string} id - Light identifier
-   * @param {string} name - Light name mapping
    */
   add: function addName(id, name) {
     if (!id || !name) {
@@ -18,7 +18,7 @@ const mapper = {
       return;
     }
 
-    let key = getKey(name);
+    let key = this.getKey(name);
     nameToId[key] = id;
   },
 
@@ -35,11 +35,11 @@ const mapper = {
     }
 
     // value found from nameToId should already be an identifier
-    if (_.includes(nameToId, name)) {
+    if (includes(nameToId, name)) {
       return name;
     }
 
-    let id = nameToId[getKey(name)];
+    let id = nameToId[this.getKey(name)];
     if (id) {
       return id;
     }
@@ -51,18 +51,21 @@ const mapper = {
    * Get list of light names and groups.
    */
   getNames: function() {
-    let names = _.keys(nameToId).sort();
+    let names = keys(nameToId).sort();
     names.push('all');
     return names;
+  },
+
+  /**
+   * Get light mapping key.
+   *
+   * @param {string} name - Light name
+   * @return {string} - Light mapping key
+   */
+  getKey: function(name) {
+    return name ? name.toLowerCase().replace(/ /g, '-') : null;
   }
 };
-
-/**
- * Use lowercase keys.
- */
-function getKey(name) {
-  return name ? name.toLowerCase() : null;
-}
 
 // Expose mapper
 module.exports = exports = mapper;
