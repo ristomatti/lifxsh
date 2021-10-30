@@ -82,13 +82,18 @@ screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-s
 
 ### Global (might require sudo)
 
-```bash npm install --global lifxsh ```
+```sh
+npm install --global lifxsh
+```
 
 ### Local
 
-```bash npm install lifxsh ```
+```sh
+npm install lifxsh
+```
 
 ## Usage
 
 1. Run `lifxsh` (global install) or `node_modules/.bin/lifxsh` (local install)
 2. Type `help`
+
