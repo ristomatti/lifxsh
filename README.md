@@ -8,6 +8,20 @@ screenshot](https://raw.githubusercontent.com/ristomatti/lifxsh/master/example-s
 
 ## Release notes
 
+### Version 1.0.0
+
+- replace spaces with dashes for light aliases used to avoid using quotes when
+  addressing lights so for example "Kitchen Table" becomes "kitchen-table"
+- include light alias in the output of `list`
+- parse duration in natural language, e.g. `on kitchen-table -d 5m`
+- update lifx-lan-client to v1.1.0 to support newer products
+- fix stale cached light status issue
+- fix unhandled promise warning
+
+### Version 0.10.0
+
+- fix npm audit issues
+
 ### Version 0.9.1
 
 - remove babel transpilation
