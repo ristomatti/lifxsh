@@ -33,13 +33,13 @@
   "homepage": "https://github.com/ristomatti/lifxsh#readme",
   "dependencies": {
     "chalk": "^4.1.0",
-    "cliff": "^0.1.10",
+    "cliff": "github:ristomatti/cliff#v0.1.10-patch",
     "home-or-tmp": "^3.0.0",
     "js-yaml": "^3.13.1",
     "lifx-lan-client": "^1.1.0",
     "lodash": "^4.17.21",
     "parse-duration": "^1.0.0",
-    "vorpal": "^1.12.0"
+    "vorpal": "github:ristomatti/vorpal#v1.11.4-patch"
   },
   "devDependencies": {
     "@types/js-yaml": "^3.12.5",
