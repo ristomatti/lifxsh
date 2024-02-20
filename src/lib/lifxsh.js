@@ -1,7 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
-const { isEmpty } = require('lodash');
+const { isEmpty, isArray, defaults, concat, isUndefined } = require('lodash');
 const lifx = require('lifx-lan-client');
 const mapper = require('./mapper');
 const log = require('./log');
@@ -39,7 +38,7 @@ const lifxsh = {
   list: function () {
     let lights = [];
     let statePromises = [];
-    let onlineOffline = _.concat(client.lights('on'), client.lights('off'));
+    let onlineOffline = concat(client.lights('on'), client.lights('off'));
 
     onlineOffline.forEach(light => {
       let statePromise = getState(light);
@@ -108,7 +107,7 @@ const lifxsh = {
     lights.forEach(light => {
       getState(light)
         .then(state => {
-          _.defaults(color, state.color); // merge params with current state
+          defaults(color, state.color); // merge params with current state
           changeColor(light, color, duration);
           state.color = color;
           cache.state[light.id] = state;
@@ -132,7 +131,7 @@ const lifxsh = {
   colorZones: function (name, startZone, endZone, color, duration = DEFAULT_DURATION,
     apply = false) {
     let id = mapper.get(name);
-    if (_.isUndefined(name)) {
+    if (isUndefined(name)) {
       return;
     }
     let light = client.light(id);
@@ -170,7 +169,7 @@ const lifxsh = {
  * @throws {TypeError}
  */
 function findLights(names) {
-  if (!_.isArray(names)) {
+  if (!isArray(names)) {
     throw new TypeError('Array of light names expected');
   }
 
