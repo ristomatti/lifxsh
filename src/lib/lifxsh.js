@@ -1,9 +1,9 @@
 'use strict';
 
-const { isEmpty, isArray, defaults, concat, isUndefined } = require('lodash');
-const lifx = require('lifx-lan-client');
-const mapper = require('./mapper');
-const log = require('./log');
+import { isEmpty, isArray, defaults, concat, isUndefined } from 'lodash-es';
+import lifx from 'lifx-lan-client';
+import { mapper } from './mapper.js';
+import { log } from './log.js';
 
 // default change duration
 const DEFAULT_DURATION = 500;
@@ -14,7 +14,7 @@ const cache = {
   state: {}
 };
 
-const lifxsh = {
+export const lifxsh = {
   /**
    * Initialize connection to lights.
    */
@@ -290,6 +290,3 @@ function initEventListeners() {
     log.discoveryCompleted();
   });
 }
-
-// Expose lifxsh
-module.exports = exports = lifxsh;

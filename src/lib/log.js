@@ -1,31 +1,31 @@
-'use strict';
+import Vorpal from 'vorpal';
+import { inspect, format } from 'node:util';
+import chalk from 'chalk';
+import cliff from 'cliff';
+import { sortBy } from 'lodash-es';
 
-const vorpal = new (require('vorpal'))();
-const util = require('util');
-const chalk = require('chalk');
-const cliff = require('cliff');
-const { sortBy } =require('lodash');
+const { bgBlue, bgMagenta, bgGreen, bgRed, green, yellow, red, cyan } = chalk;
+const vorpal = new Vorpal();
 
-const log = {
-
+export const log = {
   found: function(light, state) {
-    let event = chalk.bgBlue.white.bold(' NEW ');
+    let event = bgBlue.white.bold(' NEW ');
     logEvent(event, light);
   },
 
   discoveryCompleted: function() {
-    let event = chalk.bgMagenta.white.bold(' DISCOVERY COMPLETED ');
+    let event = bgMagenta.white.bold(' DISCOVERY COMPLETED ');
     let msg = `${event} All lights found`;
     timestamp(msg);
   },
 
   online: function(light, state) {
-    let event = chalk.bgGreen.white.bold(' ONLINE ');
+    let event = bgGreen.white.bold(' ONLINE ');
     logEvent(event, light);
   },
 
   offline: function(light) {
-    let event = chalk.bgRed.white.bold(' OFFLINE ');
+    let event = bgRed.white.bold(' OFFLINE ');
     logEvent(event, light);
   },
 
@@ -48,29 +48,29 @@ const log = {
   },
 
   info: function(msg) {
-    timestamp(chalk.green('INFO: ') + msg);
+    timestamp(green('INFO: ') + msg);
   },
 
   warn: function(msg) {
-    timestamp(chalk.yellow('WARNING: ') + msg);
+    timestamp(yellow('WARNING: ') + msg);
   },
 
   error: function(msg, ...args) {
-    timestamp(chalk.red('ERROR: ') + msg, ...args);
+    timestamp(red('ERROR: ') + msg, ...args);
   },
 
   debug: function(object) {
-    timestamp(chalk.cyan(util.inspect(object)));
+    timestamp(cyan(inspect(object)));
   }
 };
 
 function logEvent(event, light) {
-  let msg = util.format('%s %s', event, getLightInfo(light));
+  let msg = format('%s %s', event, getLightInfo(light));
   timestamp(msg);
 }
 
 function timestamp(msg, ...args) {
-  vorpal.log(util.format('%s %s', getTime(), msg), ...args);
+  vorpal.log(format('%s %s', getTime(), msg), ...args);
 }
 
 function getLightInfo(light) {
@@ -87,6 +87,3 @@ function getTime() {
 
   return hour + ':' + minute;
 }
-
-// expose log
-module.exports = exports = log;

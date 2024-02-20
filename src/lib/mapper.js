@@ -1,16 +1,17 @@
-'use strict';
-
-const { includes, keys } = require('lodash');
-const log = require('./log');
+import { includes, keys } from 'lodash-es';
+import { log } from './log.js';
 
 /**
  * @type import('lodash').Dictionary<string>
  */
 const nameToId = {};
 
-const mapper = {
+export const mapper = {
   /**
    * Add light name to identifier mapping.
+   *
+   * @param {string} id - Light identifier
+   * @param {string} name - Light name
    */
   add: function addName(id, name) {
     if (!id || !name) {
@@ -66,6 +67,3 @@ const mapper = {
     return name ? name.toLowerCase().replace(/ /g, '-') : null;
   }
 };
-
-// Expose mapper
-module.exports = exports = mapper;

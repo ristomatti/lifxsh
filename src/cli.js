@@ -1,28 +1,29 @@
 #!/usr/bin/env node
 
-'use strict';
+import { isArray, isNumber, isString } from 'lodash-es';
+import Vorpal from 'vorpal';
+import chalk from 'chalk';
+import homeOrTmp from 'home-or-tmp';
+import parse from 'parse-duration';
+import { lifxsh } from './lib/lifxsh.js';
+import { mapper } from './lib/mapper.js';
+import { load } from 'js-yaml';
+import { readFileSync } from 'fs';
 
-const { isArray, isNumber, isString } = require('lodash');
-const vorpal = new (require('vorpal'))();
-const chalk = require('chalk');
-const homeOrTmp = require('home-or-tmp');
-const parse = require('parse-duration');
-const lifxsh = require('./lib/lifxsh');
-const mapper = require('./lib/mapper');
-const yaml = require('js-yaml');
-const fs = require('fs');
+const { magenta } = chalk;
+const vorpal = new Vorpal();
 
 /**
  * Constants
  */
 const STORAGE_PATH = homeOrTmp + '/.lifxsh'; // settings, command history
-const PROMPT = chalk.magenta.bold('LIFX>'); // prompt
+const PROMPT = magenta.bold('LIFX>'); // prompt
 const DEFAULT_DURATION = 500;
 
 let settings = {};
 try {
   const settingsFile = `${STORAGE_PATH}/settings.yml`;
-  settings = yaml.safeLoad(fs.readFileSync(settingsFile, 'utf8'));
+  settings = load(readFileSync(settingsFile, 'utf8'));
 } catch (e) {
   // ignored
 }

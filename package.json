@@ -2,6 +2,7 @@
   "name": "lifxsh",
   "version": "1.0.2",
   "description": "Interactive command line interface for controlling LIFX lamps. Uses the LIFX LAN protocol for communication with the lights.",
+  "type": "module",
   "main": "./src/cli.js",
   "bin": "./src/cli.js",
   "scripts": {
@@ -32,20 +33,21 @@
   },
   "homepage": "https://github.com/ristomatti/lifxsh#readme",
   "dependencies": {
-    "chalk": "^4.1.0",
+    "chalk": "^5.3.0",
     "cliff": "github:ristomatti/cliff#v0.1.10-patch",
-    "home-or-tmp": "^3.0.0",
-    "js-yaml": "^3.13.1",
+    "home-or-tmp": "^4.0.0",
+    "js-yaml": "^4.1.0",
     "lifx-lan-client": "^1.1.0",
     "lodash": "^4.17.21",
-    "parse-duration": "^1.0.0",
+    "lodash-es": "^4.17.21",
+    "parse-duration": "^1.1.0",
     "vorpal": "github:ristomatti/vorpal#v1.11.4-patch"
   },
   "devDependencies": {
-    "@types/js-yaml": "^3.12.5",
-    "@types/vorpal": "^1.12.0",
-    "eslint": "^6.8.0",
-    "typescript": "^4.2.3"
+    "@types/js-yaml": "^4.0.9",
+    "@types/vorpal": "^1.12.6",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
   },
   "engines": {
     "node": ">=8.10"
